@@ -21,6 +21,7 @@ let package = Package(
     .library(name: "ComplexModule", targets: ["ComplexModule"]),
     .library(name: "Numerics", targets: ["Numerics"]),
     .library(name: "RealModule", targets: ["RealModule"]),
+	.library(name: "RationalModule", targets: ["RationalModule"])
   ],
   
   targets: [
@@ -51,7 +52,13 @@ let package = Package(
         .linkedLibrary("m", .when(platforms: [.linux, .android]))
       ]
     ),
-    
+
+	.target(
+		name: "RationalModule",
+		dependencies: ["IntegerUtilities"],
+		exclude: excludedFilenames
+	),
+
     // MARK: - Implementation details
     .target(
       name: "_NumericsShims",
@@ -76,11 +83,17 @@ let package = Package(
       dependencies: ["IntegerUtilities", "_TestSupport"],
       exclude: ["CMakeLists.txt"]
     ),
-    
-    .testTarget(
-      name: "RealTests",
-      dependencies: ["_TestSupport"],
-      exclude: ["CMakeLists.txt"]
-    )
+
+	.testTarget(
+	  name: "RealTests",
+	  dependencies: ["_TestSupport"],
+	  exclude: ["CMakeLists.txt"]
+	),
+
+	.testTarget(
+	  name: "RationalTests",
+	  dependencies: ["RationalModule"],
+	  exclude: ["CMakeLists.txt"]
+	)
   ]
 )
