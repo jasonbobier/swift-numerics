@@ -18,17 +18,13 @@
 /// [lcm]: https://en.wikipedia.org/wiki/Least_common_multiple
 @inlinable
 public func lcm<T: BinaryInteger>(_ a: T, _ b: T) -> T {
+	assert(!(a is any FixedWidthInteger))
+
 	guard (a != 0) && (b != 0) else {
 		return 0
 	}
 
-	let lcm = a.magnitude / gcd(a, b) * b.magnitude
-
-	guard let result = T(exactly: lcm) else {
-		fatalError("LCM \(lcm) is not representable as \(T.self).")
-	}
-
-	return result
+	return T(a.magnitude / gcd(a, b) * b.magnitude)
 }
 
 /// The [least common multiple][lcm] of `a` and `b`.

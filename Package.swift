@@ -23,7 +23,11 @@ let package = Package(
     .library(name: "RealModule", targets: ["RealModule"]),
 	.library(name: "RationalModule", targets: ["RationalModule"])
   ],
-  
+
+  dependencies: [
+	.package(url: "https://github.com/attaswift/BigInt", from: "5.5.1")
+  ],
+
   targets: [
     // MARK: - Public API
     .target(
@@ -80,7 +84,11 @@ let package = Package(
     
     .testTarget(
       name: "IntegerUtilitiesTests",
-      dependencies: ["IntegerUtilities", "_TestSupport"],
+      dependencies: [
+		"IntegerUtilities",
+		"_TestSupport",
+		"BigInt"
+	  ],
       exclude: ["CMakeLists.txt"]
     ),
 
@@ -92,7 +100,10 @@ let package = Package(
 
 	.testTarget(
 	  name: "RationalTests",
-	  dependencies: ["RationalModule"],
+	  dependencies: [
+		"RationalModule",
+		"BigInt"
+	  ],
 	  exclude: ["CMakeLists.txt"]
 	)
   ]

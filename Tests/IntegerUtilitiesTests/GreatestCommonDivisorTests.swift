@@ -12,10 +12,10 @@
 
 import IntegerUtilities
 import Testing
+import BigInt
 
-@Suite("Greatest Common Divisor Tests")
-struct GreatestCommonDivisorTests {
-	@Test("gcd") func gcdTests() async throws {
+struct `Greatest Common Divisor Tests` {
+	@Test func `gcd<BinaryInteger>`() async throws {
 		#expect(gcd(0, 0) == 0)
 		#expect(gcd(0, 1) == 1)
 		#expect(gcd(1, 0) == 1)
@@ -40,5 +40,11 @@ struct GreatestCommonDivisorTests {
 		#expect(gcd(0, Int.min) == Int.min.magnitude)
 		#expect(gcd(Int.min, 0) == Int.min.magnitude)
 		#expect(gcd(Int.min, Int.min) == Int.min.magnitude)
+
+		let bigIntCommonFactor = BigInt("457425209663695646359203630886756382027")
+		let bigInt1 = BigInt("340282366920938463463374607431768211507") * bigIntCommonFactor
+		let bigInt2 = BigInt("391658961466960540800131805247996205641") * bigIntCommonFactor
+
+		#expect(gcd(bigInt1, bigInt2) == bigIntCommonFactor)
 	}
 }

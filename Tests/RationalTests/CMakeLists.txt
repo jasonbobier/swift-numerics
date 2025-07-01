@@ -12,5 +12,5 @@ target_compile_options(RationalTests PRIVATE
   -enable-testing)
 target_link_libraries(RationalTests PUBLIC
   $<$<NOT:$<PLATFORM_ID:Darwin>>:Foundation>
-  Numerics
+  Testing
   XCTest)
