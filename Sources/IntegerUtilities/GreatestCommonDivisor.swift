@@ -14,9 +14,35 @@
 /// If both inputs are zero, the result is zero. If one input is zero, the
 /// result is the absolute value of the other input.
 ///
+/// The result must be representable within its type. In particular, the gcd
+/// of a signed, fixed-width integer type's minimum with itself (or zero)
+/// cannot be represented, and results in a trap.
+///
+///     gcd(Int.min, Int.min)   // Overflow error
+///     gcd(Int.min, 0)         // Overflow error
+///
 /// [gcd]: https://en.wikipedia.org/wiki/Greatest_common_divisor
 @inlinable
-public func gcd<T: BinaryInteger>(_ a: T, _ b: T) -> T.Magnitude {
+public func gcd<T: BinaryInteger>(_ a: T, _ b: T) -> T {
+    if a.magnitude == 1 || b.magnitude == 1 { return 1 }
+    
+    let gcd = greatestCommonDivisor(a, b)
+    
+    // Try to convert result to T.
+    if let result = T(exactly: gcd) { return result }
+    // If that fails, produce a diagnostic.
+    fatalError("GCD (\(gcd)) is not representable as \(T.self).")
+}
+
+
+/// The [greatest common divisor][gcd] of `a` and `b`.
+///
+/// If both inputs are zero, the result is zero. If one input is zero, the
+/// result is the absolute value of the other input.
+///
+/// [gcd]: https://en.wikipedia.org/wiki/Greatest_common_divisor
+@inlinable
+public func greatestCommonDivisor<T: BinaryInteger>(_ a: T, _ b: T) -> T.Magnitude {
     var x = a
     var y = b
 
