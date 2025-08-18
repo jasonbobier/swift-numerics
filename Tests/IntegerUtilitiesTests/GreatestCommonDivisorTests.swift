@@ -14,7 +14,7 @@ import IntegerUtilities
 import Testing
 
 struct `Greatest Common Divisor Tests` {
-    @Test func `gcd<BinaryInteger>`() async throws {
+    @Test func `gcd()`() async throws {
         #expect(gcd(0, 0) == 0)
         #expect(gcd(0, 1) == 1)
         #expect(gcd(1, 0) == 1)
