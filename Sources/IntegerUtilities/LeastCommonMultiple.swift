@@ -53,7 +53,7 @@ public func leastCommonMultiple<T: FixedWidthInteger>(_ a: T, _ b: T) throws(Lea
 }
 
 
-/// Error thrown by `leastCommonMultiple())`.
+/// Error thrown by `leastCommonMultiple`.
 ///
 /// Thrown when the result of the lcm isn't representable within its type. You can combine `high` and `low` into a double width integer to access the result.
 ///
