@@ -18,7 +18,7 @@ private func lcm_ForceBinaryInteger<T: BinaryInteger>(_ a: T, _ b: T) -> T {
 }
 
 struct `Least Common Multiple Tests` {
-	@Test func `lcm<BinaryInteger>`() async throws {
+	@Test func `lcm()`() async throws {
 		#expect(lcm_ForceBinaryInteger(1024, 0) == 0)
 		#expect(lcm_ForceBinaryInteger(0, 1024) == 0)
 		#expect(lcm_ForceBinaryInteger(0, 0) == 0)
@@ -30,31 +30,43 @@ struct `Least Common Multiple Tests` {
 		#expect(lcm_ForceBinaryInteger(288, 6930) == 110880)
 		#expect(lcm_ForceBinaryInteger(Int.max, 1) == Int.max)
 		#expect(lcm_ForceBinaryInteger(1, Int.max) == Int.max)
+        await #expect(processExitsWith: .failure) {
+            _ = lcm_ForceBinaryInteger(Int.min, Int.min)
+        }
+        await #expect(processExitsWith: .failure) {
+            _ = lcm_ForceBinaryInteger(Int.min, 1)
+        }
+        await #expect(processExitsWith: .failure) {
+            _ = lcm_ForceBinaryInteger(1, Int.min)
+        }
+        await #expect(processExitsWith: .failure) {
+            _ = lcm_ForceBinaryInteger(Int8.min, Int8.max)
+        }
 	}
 
-	@Test func `lcm<FixedWidthInteger>`() async throws {
-		#expect(try lcm(1024, 0) == 0)
-		#expect(try lcm(0, 1024) == 0)
-		#expect(try lcm(0, 0) == 0)
-		#expect(try lcm(1024, 768) == 3072)
-		#expect(try lcm(768, 1024) == 3072)
-		#expect(try lcm(24, 18) == 72)
-		#expect(try lcm(18, 24) == 72)
-		#expect(try lcm(6930, 288) == 110880)
-		#expect(try lcm(288, 6930) == 110880)
-		#expect(try lcm(Int.max, 1) == Int.max)
-		#expect(try lcm(1, Int.max) == Int.max)
+	@Test func `leastCommonMultiple()`() async throws {
+		#expect(try leastCommonMultiple(1024, 0) == 0)
+		#expect(try leastCommonMultiple(0, 1024) == 0)
+		#expect(try leastCommonMultiple(0, 0) == 0)
+		#expect(try leastCommonMultiple(1024, 768) == 3072)
+		#expect(try leastCommonMultiple(768, 1024) == 3072)
+		#expect(try leastCommonMultiple(24, 18) == 72)
+		#expect(try leastCommonMultiple(18, 24) == 72)
+		#expect(try leastCommonMultiple(6930, 288) == 110880)
+		#expect(try leastCommonMultiple(288, 6930) == 110880)
+		#expect(try leastCommonMultiple(Int.max, 1) == Int.max)
+		#expect(try leastCommonMultiple(1, Int.max) == Int.max)
 		#expect(throws: LeastCommonMultipleOverflowError<Int>(high: 0, low: Int.min.magnitude)) {
-			try lcm(Int.min, Int.min)
+			try leastCommonMultiple(Int.min, Int.min)
 		}
 		#expect(throws: LeastCommonMultipleOverflowError<Int>(high: 0, low: Int.min.magnitude)) {
-			try lcm(Int.min, 1)
+			try leastCommonMultiple(Int.min, 1)
 		}
 		#expect(throws: LeastCommonMultipleOverflowError<Int>(high: 0, low: Int.min.magnitude)) {
-			try lcm(1, Int.min)
+			try leastCommonMultiple(1, Int.min)
 		}
 		#expect(throws: LeastCommonMultipleOverflowError<Int8>(high: 63, low: 128)) {
-			try lcm(Int8.min, Int8.max)
+			try leastCommonMultiple(Int8.min, Int8.max)
 		}
 	}
 }

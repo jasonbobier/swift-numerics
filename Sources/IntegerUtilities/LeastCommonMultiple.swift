@@ -22,7 +22,7 @@ public func lcm<T: BinaryInteger>(_ a: T, _ b: T) -> T {
 		return 0
 	}
 
-	return T(a.magnitude / gcd(a, b) * b.magnitude)
+    return T(a.magnitude / gcd(a.magnitude, b.magnitude) * b.magnitude)
 }
 
 /// The [least common multiple][lcm] of `a` and `b`.
@@ -33,12 +33,12 @@ public func lcm<T: BinaryInteger>(_ a: T, _ b: T) -> T {
 ///
 /// [lcm]: https://en.wikipedia.org/wiki/Least_common_multiple
 @inlinable
-public func lcm<T: FixedWidthInteger>(_ a: T, _ b: T) throws(LeastCommonMultipleOverflowError<T>) -> T {
+public func leastCommonMultiple<T: FixedWidthInteger>(_ a: T, _ b: T) throws(LeastCommonMultipleOverflowError<T>) -> T {
 	guard (a != 0) && (b != 0) else {
 		return 0
 	}
 
-	let reduced = a.magnitude / gcd(a, b)
+    let reduced = a.magnitude / gcd(a.magnitude, b.magnitude)
 
 	// We could use the multipliedFullWidth directly here, but we optimize instead for the non-throwing case because multipliedReportingOverflow is much faster.
 	let (partialValue, overflow) = reduced.multipliedReportingOverflow(by: b.magnitude)
