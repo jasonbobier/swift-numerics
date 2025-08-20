@@ -24,16 +24,34 @@
 /// [gcd]: https://en.wikipedia.org/wiki/Greatest_common_divisor
 @inlinable
 public func gcd<T: BinaryInteger>(_ a: T, _ b: T) -> T {
-    if a.magnitude == 1 || b.magnitude == 1 { return 1 }
+    let gcd = greatestCommonDivisorFullWidth(a, b)
     
-    let gcd = greatestCommonDivisor(a, b)
+    guard let result = T(exactly: gcd) else {
+        fatalError("GCD (\(gcd)) is not representable as \(T.self).")
+    }
     
-    // Try to convert result to T.
-    if let result = T(exactly: gcd) { return result }
-    // If that fails, produce a diagnostic.
-    fatalError("GCD (\(gcd)) is not representable as \(T.self).")
+    return result
 }
 
+/// Returns the [greatest common divisor][gcd] of `a` and `b`, along with a Boolean value indicating whether overflow occurred in the operation.
+///
+/// If both inputs are zero, the result is zero. If one input is zero, the
+/// result is the absolute value of the other input.
+///
+/// - Returns: A tuple containing the result of the function along with a Boolean value indicating whether overflow occurred. If the overflow component is false, the partialValue component contains the entire result. If the
+/// overflow component is true, an overflow occurred and the partialValue component contains the truncated result of the operation.
+///
+/// [gcd]: https://en.wikipedia.org/wiki/Greatest_common_divisor
+@inlinable
+public func greatestCommonDivisorReportingOverflow<T: BinaryInteger>(_ a: T, _ b: T) -> (partialValue: T, overflow: Bool) {
+    let gcd = greatestCommonDivisorFullWidth(a, b)
+    
+    guard let result = T(exactly: gcd) else {
+        return (partialValue: T(truncatingIfNeeded: gcd), overflow: true)
+    }
+    
+    return (partialValue: result, overflow: false)
+}
 
 /// The [greatest common divisor][gcd] of `a` and `b`.
 ///
@@ -42,11 +60,11 @@ public func gcd<T: BinaryInteger>(_ a: T, _ b: T) -> T {
 ///
 /// [gcd]: https://en.wikipedia.org/wiki/Greatest_common_divisor
 @inlinable
-public func greatestCommonDivisor<T: BinaryInteger>(_ a: T, _ b: T) -> T.Magnitude {
-    var x = a
-    var y = b
+public func greatestCommonDivisorFullWidth<T: BinaryInteger>(_ a: T, _ b: T) -> T.Magnitude {
+    var x = a.magnitude
+    var y = b.magnitude
 
-    if x.magnitude < y.magnitude {
+    if x < y {
         swap(&x, &y)
     }
 
@@ -57,5 +75,5 @@ public func greatestCommonDivisor<T: BinaryInteger>(_ a: T, _ b: T) -> T.Magnitu
         (x, y) = (y, x % y)
     }
 
-    return x.magnitude
+    return x
 }
