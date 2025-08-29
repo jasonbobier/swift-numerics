@@ -31,6 +31,9 @@ public func lcm<T: BinaryInteger>(_ a: T, _ b: T) -> T {
 ///
 /// Throws `LeastCommonMultipleOverflowError` containing the full width result if it is not representable within its type.
 ///
+/// > Note: For retrieving the result  as `T` or the fullwidth result on overflow,  calling `leastCommonMultiple()` is faster than calling
+/// `leastCommonMultipleReportingOverflow()` followed by  leastCommonMultipleFullWidth()`.
+///
 /// [lcm]: https://en.wikipedia.org/wiki/Least_common_multiple
 @inlinable
 public func leastCommonMultiple<T: FixedWidthInteger>(_ a: T, _ b: T) throws(LeastCommonMultipleOverflowError<T>) -> T {
