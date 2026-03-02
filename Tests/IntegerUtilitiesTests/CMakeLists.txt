@@ -11,6 +11,7 @@ add_library(IntegerUtilitiesTests
   DivideTests.swift
   DoubleWidthTests.swift
   GreatestCommonDivisorTests.swift
+  LeastCommonMultipleTests.swift
   RotateTests.swift
   SaturatingArithmeticTests.swift
   ShiftTests.swift)
